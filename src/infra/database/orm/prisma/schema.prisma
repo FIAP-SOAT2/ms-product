@@ -1,0 +1,33 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model product {
+  id          Int                   @id(map: "PK_bebc9158e480b949565b4dc7a82") @default(autoincrement())
+  name        String                @unique(map: "UQ_22cc43e9a74d7498546e9a63e77") @db.VarChar(100)
+  description String                @db.VarChar(100)
+  category    product_category_enum 
+  price       Decimal               @db.Decimal(10, 2)
+  stock       Int
+}
+
+enum product_category_enum {
+  BURGUER @map("0")
+  BEVARAGE @map("1")
+  DESSERT @map("2")
+  APPETIZER @map("3")
+  OTHER @map("4")
+}
+
+enum user_profile_enum {
+    CUSTOMER @map("0")
+    EMPLOYEE @map("1")
+    ADMIN @map("2")
+}
+
+
