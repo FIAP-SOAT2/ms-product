@@ -1,0 +1,62 @@
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: ms-product-autoscaler
+spec:
+  scaleTargetRef:
+    kind: Deployment
+    apiVersion: apps/v1
+    name: ms-product
+  minReplicas: 2
+  maxReplicas: 5
+  metrics:
+    - type: Resource
+      resource:
+        name: cpu
+        target:
+          type: Utilization
+          averageUtilization: 60
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ms-product
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ms-product
+  template:
+    metadata:
+      labels:
+        app: ms-product
+    spec:
+      containers:
+      - name: ms-product
+        image: anaccampos/ms-product-clean-architecture:0.3.0
+        ports:
+          - containerPort: 3010
+        resources:
+          limits:
+            cpu: 200m
+            memory: 500Mi
+          requests:
+            cpu: 100m
+            memory: 400Mi
+        livenessProbe:
+          httpGet:
+            path: /api/health
+            port: 3000
+          initialDelaySeconds: 300
+          periodSeconds: 60
+          timeoutSeconds: 20
+          failureThreshold: 3
+        envFrom:
+        - configMapRef:
+            name: ms-product-configmap
+        - secretRef:
+            name: ms-product-secret
+      imagePullSecrets:
+        - name: auth-docker
+      restartPolicy: Always

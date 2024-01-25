@@ -1,0 +1,11 @@
+kind: ConfigMap
+metadata:
+  name: ms-product-configmap
+  labels:
+    app: ms-product
+apiVersion: v1
+data:
+  PORT: "3010"
+  POSTGRES_HOST: "postgres"
+  POSTGRES_PORT: "5432"
+  POSTGRES_DB: "postgres"
