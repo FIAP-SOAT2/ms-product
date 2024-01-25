@@ -1,0 +1,60 @@
+name: CI/CD with Minikube
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+  
+  env:
+    PORT: 3010
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+
+      - name: Install Dependencies
+        run: npm install
+
+      - name: Run Tests
+        run: npm test
+
+      - name: Build Application
+        run: npm run build
+
+      - name: Set up Minikube
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y conntrack
+          sudo minikube start --driver=docker
+
+      - name: Build Docker Image
+        run: |
+          docker build -t anaccampos/ms-product:latest .
+
+      - name: Tag Docker Image
+        run: |
+          docker tag anaccampos/ms-product:latest anaccampos/ms-product:$(date +'%Y%m%d%H%M%S')
+
+      - name: Load Docker Image into Minikube
+        run: |
+          minikube cache add anaccampos/ms-product:$(date +'%Y%m%d%H%M%S')
+
+      - name: Apply Kubernetes Manifests
+        run: kubectl apply -f k8s/
+
+      - name: Expose Service in Minikube
+        run: kubectl expose deployment ms-product --type=NodePort --env=PORT=$(PORT)
+
+      - name: Show Minikube IP and Port
+        run: |
+          echo "Minikube IP: $(minikube ip)"
+          echo "Service Port: $(kubectl get svc ms-product -o jsonpath='{.spec.ports[0].nodePort}')"
