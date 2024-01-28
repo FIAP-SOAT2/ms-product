@@ -15,7 +15,7 @@
     "dev": "nodemon --watch 'src/' --exec 'ts-node src/server.ts' -e ts",
     "start:dev": "npm run build:watch\" \"npm run dev\"",
     "start:dev:win": "npx nodemon src/server.ts",
-    "test": "jest --passWithNoTests --runInBand --no-cache",
+    "test": "jest --passWithNoTests --runInBand --no-cache --coverage",
     "test-bdd": "cucumber-js test --format summary",
     "test:stage": "npm run test -- --findRelatedTests",
     "test:ci": "npm run test -- --coverage",
@@ -79,6 +79,7 @@
     "pg": "^8.11.3",
     "prettier": "^3.0.3",
     "rimraf": "^5.0.5",
+    "supertest": "^6.3.4",
     "swagger-ui": "^5.4.2",
     "swagger-ui-express": "^5.0.0"
   }
