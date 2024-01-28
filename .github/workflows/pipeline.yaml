@@ -1,0 +1,86 @@
+name: CI/CD with Minikube
+
+on:
+  push:
+    branches: [ "main" ]
+    paths-ignore:
+      - '**/*.md'
+      - .github/dependabot.yml
+  pull_request:
+    branches: [ "main" ]
+    paths-ignore:
+      - '**/*.md'
+      - .github/dependabot.yml
+
+env:
+  PORT: 3010
+
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+  ci:
+    name: Build and test
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+
+      - name: Install Dependencies
+        run: npm install
+
+      - name: SonarCloud Scan
+        uses: SonarSource/sonarcloud-github-action@master
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+
+      - name: Run Tests
+        run: npm test
+
+      - name: Build Application
+        run: npm run build
+
+      - name: Set up Minikube
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y conntrack
+          minikube start --driver=docker
+
+      - name: Build Docker Image
+        run: |
+          docker build -t ${{ secrets.DOCKER_USERNAME }}/ms-product:latest .
+
+      - name: Push Docker Image to Docker Hub
+        run: |
+          docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
+          docker push ${{ secrets.DOCKER_USERNAME }}/ms-product:latest
+
+  cd:
+    name: Deploy to minikube
+    if: ${{ success() && github.event_name != 'pull_request' }}
+    needs: [ci]
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Load Docker Image into Minikube
+        run: |
+          minikube cache add ${{ secrets.DOCKER_USERNAME }}/ms-product:$(date +'%Y%m%d%H%M%S')
+
+      - name: Apply Kubernetes Manifests
+        run: kubectl apply -f k8s/
+
+      - name: Expose Service in Minikube
+        run: kubectl expose deployment ms-product --type=NodePort --env=PORT=$(PORT)
+
+      - name: Show Minikube IP and Port
+        run: |
+          echo "Minikube IP: $(minikube ip)"
+          echo "Service Port: $(kubectl get svc ms-product -o jsonpath='{.spec.ports[0].nodePort}')"
