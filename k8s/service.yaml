@@ -10,8 +10,8 @@ spec:
   type: LoadBalancer
   ports:
   - name: "http"
-    port: 3010
-    targetPort: 3010
+    port: 4002
+    targetPort: 4002
   externalIPs:
   - 192.168.49.2
   selector:
