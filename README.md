@@ -41,8 +41,7 @@ The Domain layer contains the Entitites and it is in charge of the business logi
 ```bash
 ============= DOMAIN LAYER =====================================================================
 entities
-  L student
-    L Product.ts          // product structure
+  L Product.ts          // product structure
 
 enum
   L ProductEnum.ts
