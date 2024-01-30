@@ -38,17 +38,96 @@ To separate concerns, the application was built with a Clean Architecture. It is
 ### Domain Layer
 
 The Domain layer contains the Entitites and it is in charge of the business logic of the application.
+```bash
+============= DOMAIN LAYER =====================================================================
+entities
+  L student
+    L Product.ts          // product structure
 
+enum
+  L ProductEnum.ts
+```
 ### Application Layer
 The Application Layer implements all the use cases and contains the interfaces to interact with the outside world.
+```bash
+============= APPLICATION LAYER =================================================================
+config
+
+errors
+
+interfaces
+  L repositories
+    L CreateProductRepository.ts         
+    L DeleteProductRepository.ts
+    L GetProductByFiltersRepository.ts  
+    L GetProductByIdRepository.ts  
+    L GetProductsRepository.ts  
+    L UpdtateProductRepository.ts          
+  L use-cases
+    L UseCase.ts
+    L product
+        L CreateProductInterface.ts         
+        L DeleteProductInterface.ts
+        L GetProductByFiltersInterface.ts  
+        L GetProductByIdInterface.ts  
+        L GetProductsInterface.ts  
+        L UpdtateProductInterface.ts   
+
+use-cases                 // use cases implementation
+  L product
+    L CreateProduct.ts         
+    L DeleteProduct.ts
+    L GetProductByFilters.ts  
+    L GetProductById.ts  
+    L GetProducts.ts  
+    L UpdtateProduct.ts      
+```
 
 ### Infra Layer
 The Infra Layer contains the controllers, database connections, repositories, that is, this layer has the concrete implementations of the application.
+```bash
+============= INFRA LAYER ======================================================================
+database
+  L migrations      
+  L orm
+    L prisma
+        L schema.prisma 
+    L prisma.ts
+  L repositories
+    L ProductRepository.ts
 
+http
+  L controllers     // request and response processing logic
+  L errors
+  L helpers
+  L interfaces
+  L middlewares
+  L validations
+  L validators
+```
 
 ### Main Layer
 The Main Layer is the entry point of the application. It contains the framework (Express), the routes, the factory method to inject the necessary dependencies.
+```bash
+============= MAIN LAYER ========================================================================
+adapters
 
+config
+
+doc
+  L swagger.yaml
+  L swagger-config.ts
+
+factories
+  L controllers
+  L use-cases
+
+middlewares
+
+routes
+  L healthcheck.ts     // healthcheck route
+  L product-route.ts   // product routes
+```
 ## What we use?
 
 #### Environment
