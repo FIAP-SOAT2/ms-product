@@ -5,7 +5,7 @@ metadata:
     app: ms-product
 apiVersion: v1
 data:
-  PORT: "3010"
+  PORT: "4002"
   POSTGRES_HOST: "postgres"
-  POSTGRES_PORT: "5432"
+  POSTGRES_PORT: "5433"
   POSTGRES_DB: "postgres"

@@ -13,7 +13,7 @@ on:
       - .github/dependabot.yml
 
 env:
-  PORT: 3010
+  PORT: 4002
 
 permissions:
   id-token: write
@@ -75,7 +75,7 @@ jobs:
           minikube cache add ${{ secrets.DOCKER_USERNAME }}/ms-product:$(date +'%Y%m%d%H%M%S')
 
       - name: Apply Kubernetes Manifests
-        run: kubectl apply -f k8s/
+        run: kubectl apply -f ../k8s/
 
       - name: Expose Service in Minikube
         run: kubectl expose deployment ms-product --type=NodePort --env=PORT=$(PORT)

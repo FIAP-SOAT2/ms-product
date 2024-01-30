@@ -36,7 +36,7 @@ spec:
       - name: ms-product
         image: anaccampos/ms-product-clean-architecture:0.3.0
         ports:
-          - containerPort: 3010
+          - containerPort: 4002
         resources:
           limits:
             cpu: 200m
@@ -47,7 +47,7 @@ spec:
         livenessProbe:
           httpGet:
             path: /api/health
-            port: 3000
+            port: 4002
           initialDelaySeconds: 300
           periodSeconds: 60
           timeoutSeconds: 20

@@ -23,7 +23,7 @@ Docker-compose is set to start an instance of Postgres and the entire applicatio
 - `npm run dev`: start the server in development mode.
 ## Swagger
 
-http://localhost:3010/docs/
+http://localhost:4002/docs/
 
 ## Local Access - Endpoints Collection
 
