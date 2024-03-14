@@ -8,9 +8,13 @@ RUN npm install
 
 COPY . .
 
+RUN npm run db:generate:models
+
 RUN npm run build
 
-EXPOSE 3000
+EXPOSE 4002
+
+RUN apt-get update -y && apt-get install -y openssl
 
 # Run
 CMD [ "npm", "run", "start" ]
