@@ -1,7 +1,7 @@
 /node_modules
 /dist
 .env
-/src/infra/database/orm/prisma/migrations
+/src/infra/database/orm/prisma/migrationsqq
 /.nyc_output
 .idea
 /.idea

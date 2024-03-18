@@ -46,7 +46,7 @@ spec:
             memory: 400Mi
         livenessProbe:
           httpGet:
-            path: /api/health-check
+            path: /api/ms-product/health-check
             port: 4002
           initialDelaySeconds: 300
           periodSeconds: 60
