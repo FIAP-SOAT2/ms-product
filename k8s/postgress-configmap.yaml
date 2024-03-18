@@ -8,4 +8,4 @@ data:
   POSTGRES_DB: postgress
   POSTGRES_USER: postgress
   POSTGRES_PASSWORD: postgress
-  DATABASE_URL: "postgresql://postgres:postgres@localhost/base?schema=public"
+  DATABASE_URL: postgress

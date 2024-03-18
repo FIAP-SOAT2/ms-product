@@ -19,7 +19,7 @@ describe('Controller', () => {
 
   beforeEach(async function () {
     app = setupApp();
-    server = app.listen(3000, () => {});
+    server = app.listen(4002, () => {});
   });
   afterEach(async function () {
     jest.clearAllMocks();

@@ -8,7 +8,7 @@ describe('healthcheckController', () => {
 
   beforeEach(async function () {
     app = setupApp();
-    server = app.listen(3000, () => {});
+    server = app.listen(4002, () => {});
   });
   afterEach(async function () {
     jest.clearAllMocks();
@@ -16,7 +16,7 @@ describe('healthcheckController', () => {
   });
 
   test('should return 200', async () => {
-    const response = await request(server).get('/api/health');
+    const response = await request(server).get('/api/health-check');
     expect(response.status).toBe(200);
   });
 });

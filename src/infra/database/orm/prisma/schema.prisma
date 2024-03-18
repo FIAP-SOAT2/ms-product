@@ -1,5 +1,6 @@
 generator client {
   provider = "prisma-client-js"
+  binaryTargets = ["native", "debian-openssl-1.1.x","debian-openssl-3.0.x", "linux-musl", "linux-musl-openssl-3.0.x"]
 }
 
 datasource db {
@@ -23,11 +24,3 @@ enum product_category_enum {
   APPETIZER @map("3")
   OTHER @map("4")
 }
-
-enum user_profile_enum {
-    CUSTOMER @map("0")
-    EMPLOYEE @map("1")
-    ADMIN @map("2")
-}
-
-

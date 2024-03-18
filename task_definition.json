@@ -7,8 +7,8 @@
             "cpu": 0,
             "portMappings": [
                 {
-                    "containerPort": 3000,
-                    "hostPort": 3000,
+                    "containerPort": 4002,
+                    "hostPort": 4002,
                     "protocol": "tcp"
                 }
             ],
