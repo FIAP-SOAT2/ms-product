@@ -5,16 +5,19 @@ import { ProductNotFoundError } from '../../../application/errors/product/Produc
 
 export class UpdateProduct implements UpdateProductInterface {
   constructor(
-    private readonly getProductByIdRepository: GetProductByIdRepository,
-    private readonly updateProductRepository: UpdateProductRepository,
+    private readonly getProductByIdRepository?: GetProductByIdRepository,
+    private readonly updateProductRepository?: UpdateProductRepository,
   ) {}
 
-  async execute(params: UpdateProductInterface.Request): Promise<UpdateProductInterface.Response> {
+  async execute(params: UpdateProductInterface.Request, type?: string): Promise<UpdateProductInterface.Response> {
     const { productId, productData } = params;
     const product = await this.getProductByIdRepository.getProductById(productId);
-
     if (!product) {
       return new ProductNotFoundError();
+    }
+
+    if(type === 'stock_reserved') {
+      productData.stock = product.stock - productData.stock;
     }
 
     return this.updateProductRepository.updateProduct({ productId, productData });
