@@ -2,5 +2,11 @@
 /dist
 .env
 /src/infra/database/orm/prisma/migrations
-/coverage
 /.nyc_output
+.idea
+/.idea
+
+
+# Coverage directory used by tools like istanbul
+coverage
+/converage
